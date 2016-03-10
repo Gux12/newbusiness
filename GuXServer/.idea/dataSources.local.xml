@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Django default" uuid="f0ed327c-9672-4070-a3f2-2b089c76f51e">
+      <user-name>guxiang</user-name>
+      <user-password>dfcddfd2df9bdf93df93df9edf93df98df84</user-password>
+      <schema-pattern>guxSchema.*</schema-pattern>
+      <default-schemas>guxSchema.*</default-schemas>
+    </data-source>
+    <data-source name="Django default2" uuid="85326740-c3f7-4b06-8d34-1633c0fbda0b">
+      <user-name>guxiang</user-name>
+      <user-password>dfcddfd2df9bdf93df93df9edf93df98df84</user-password>
+      <schema-pattern>guxSchema.*</schema-pattern>
+      <default-schemas>guxSchema.*</default-schemas>
+    </data-source>
+  </component>
+</project>
