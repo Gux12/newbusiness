@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from TestModel.models import Musician
-from django.core.context_processors import csrf
 from django.core import serializers
 from forms import UserForm
 from django.http import HttpResponseRedirect
