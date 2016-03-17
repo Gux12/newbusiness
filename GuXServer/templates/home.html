@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/css/starter-template.css" rel="stylesheet">
-
-
     <title>测试用</title>
 </head>
+
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-          <a class="navbar-brand" href="#">Future Shopping</a>
-        </div>
+                <a class="navbar-brand" href="#">Future Shopping</a>
+            </div>
             <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="">主页</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="">主页</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
         </div>
     </nav>
-
     <div class="container-fluid">
         <div class="starter-template">
             <div class="panel panel-heading">
@@ -33,7 +32,7 @@
                     <button class="btn btn-danger" id="clearall">清除全部</button>
                 </div>
                 <div class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8 input-group">
-                    <input class="form-control" type="text" id="keyword"/>
+                    <input class="form-control" type="text" id="keyword" />
                     <span class="input-group-btn">
                         <button class="btn btn-success" id="check">查询</button>
                         <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">添加</button>
@@ -43,29 +42,32 @@
             <div class="panel panel-default" id="list">
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Instrument</th>
-                        <th>To Do</th>
-                    </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Instrument</th>
+                            <th>To Do</th>
+                        </tr>
                     </thead>
                     <tbody id="tablecontent">
-                    {% for item in userlist %}
-                    <tr>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.last_name }}</td>
-                        <td>{{ item.first_name }}</td>
-                        <td>{{ item.instrument }}</td>
-                        <td><button class="btn btn-danger delete-user" id="delete{{ item.id }}">删除</button></td>
-                    </tr>
-                    {% endfor %}
+                        {% for item in userlist %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.last_name }}</td>
+                            <td>{{ item.first_name }}</td>
+                            <td>{{ item.instrument }}</td>
+                            <td>
+                                <button class="btn btn-danger delete-user" id="delete{{ item.id }}">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-    </div><!-- /.container -->
+    </div>
+    <!-- /.container -->
     <div class="container">
         <div class="row">
             <div id="map" style="width:100%;height:320px"></div>
@@ -80,8 +82,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" method="post">
-                        {% csrf_token %}
-                        {% load widget_tweaks %}
+                        {% csrf_token %} {% load widget_tweaks %}
                         <div class="form-group">
                             <label for="FirstName" class="col-sm-4 control-label">姓氏</label>
                             <div class="col-sm-6">
@@ -109,58 +110,62 @@
             </div>
         </div>
     </div>
-
-
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../static/js/jquery-1.12.1.min.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
     <script>
-$(document).ready(function(){
-    $('#checkall').click(function(){
-        $('#tablecontent').empty();
-        $.get("/checkall/",function(ret){
-            var userobj = eval('(' + ret + ')');
-            for(obj in userobj){
-                $('#tablecontent').append('<tr> <td>' + userobj[obj].pk + '</td> <td>' + userobj[obj].fields.last_name +  '</td> <td>' + userobj[obj].fields.first_name + '</td> <td>' + userobj[obj].fields.instrument + '</td> <td><button class="btn btn-danger delete-user" id="delete' + userobj[obj].pk + '">删除</button></td> </tr>');
-            }
+    $(document).ready(function() {
+        $('#checkall').click(function() {
+            $('#tablecontent').empty();
+            $.get("/checkall/", function(ret) {
+                var userobj = eval('(' + ret + ')');
+                for (obj in userobj) {
+                    $('#tablecontent').append('<tr> <td>' + userobj[obj].pk + '</td> <td>' + userobj[obj].fields.last_name + '</td> <td>' + userobj[obj].fields.first_name + '</td> <td>' + userobj[obj].fields.instrument + '</td> <td><button class="btn btn-danger delete-user" id="delete' + userobj[obj].pk + '">删除</button></td> </tr>');
+                }
+            })
+        })
+        $('#clearall').click(function() {
+            $('#tablecontent').empty();
+        })
+        $('.delete-user').click(function() {
+            var btn = $(this);
+            var id = btn.attr('id');
+            $.get("/delete_musician/", {
+                'user_id': id
+            }, function() {
+                btn.parent().parent().remove();
+            })
+        })
+        $('#check').click(function() {
+            var keyword = $('#keyword').val();
+            $('#tablecontent').empty();
+            $.get("/check/", {
+                'keyword': keyword
+            }, function(ret) {
+                var userobj = eval('(' + ret + ')');
+                for (obj in userobj) {
+                    $('#tablecontent').append('<tr> <td>' + userobj[obj].pk + '</td> <td>' + userobj[obj].fields.last_name + '</td> <td>' + userobj[obj].fields.first_name + '</td> <td>' + userobj[obj].fields.instrument + '</td> <td><button class="btn btn-danger delete-user" id="delete' + userobj[obj].pk + '">删除</button></td> </tr>');
+                }
+            })
         })
     })
-    $('#clearall').click(function(){
-        $('#tablecontent').empty();
-    })
-    $('.delete-user').click(function(){
-        var btn=$(this);
-        var id=btn.attr('id');
-        $.get("/delete_musician/",{'user_id':id},function(){
-            btn.parent().parent().remove();
-        })
-    })
-    $('#check').click(function(){
-        var keyword=$('#keyword').val();
-        $('#tablecontent').empty();
-        $.get("/check/",{'keyword':keyword},function(ret){
-            var userobj = eval('(' + ret + ')');
-            for(obj in userobj){
-                $('#tablecontent').append('<tr> <td>' + userobj[obj].pk + '</td> <td>' + userobj[obj].fields.last_name +  '</td> <td>' + userobj[obj].fields.first_name + '</td> <td>' + userobj[obj].fields.instrument + '</td> <td><button class="btn btn-danger delete-user" id="delete' + userobj[obj].pk + '">删除</button></td> </tr>');
-            }
-        })
-    })
-})
-</script>
+    </script>
     <script type="text/javascript">
     function initialize() {
-    var mp = new BMap.Map('map');
-    mp.centerAndZoom(new BMap.Point(121.491, 31.233), 11); }
+        var mp = new BMap.Map('map');
+        mp.centerAndZoom(new BMap.Point(121.491, 31.233), 11);
+    }
+
     function loadScript() {
-    var script = document.createElement("script");
-    script.src = "http://api.map.baidu.com/api?v=1.4&ak=XRC0hIYvB73wvsTGOH4ETyCx&callback=initialize"; //此 为 v2.0版本的引用方式
-    // script.src = "http://api.map.baidu.com/api?v=1.4"; // 此为 v2.0版本及以前版本的引用方式
+        var script = document.createElement("script");
+        script.src = "http://api.map.baidu.com/api?v=2.0&ak=XRC0hIYvB73wvsTGOH4ETyCx&callback=initialize"; //此 为 v2.0版本的引用方式
+        // script.src = "http://api.map.baidu.com/api?v=1.4"; // 此为 v2.0版本及以前版本的引用方式
         document.body.appendChild(script);
     }
     window.onload = loadScript;
     </script>
 </body>
+
 </html>
